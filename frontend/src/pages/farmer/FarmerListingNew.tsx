@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
-import { createListing, getListing, updateListing } from '../../services/listingService';
+import { createListing, getListing, updateListing, uploadProductImage } from '../../services/listingService';
 import { qk } from '../../utils/constants';
 import { errorMessage } from '../../services/api';
 import { Button, Card, Field, Input, PageHeader, PageLoading, Select } from '../../components/common/ui';
@@ -14,6 +14,8 @@ const { t } = useTranslation();
 const nav = useNavigate();
 const qc = useQueryClient();
 const [params] = useSearchParams();
+const [uploading, setUploading] = useState(false);
+const [uploadError, setUploadError] = useState<string | null>(null);
 const id = params.get('id') ?? undefined;
 const isEdit = Boolean(id);
 const schema = z.object({
@@ -96,7 +98,7 @@ return (
 <option value="delivery">{t('listings.delivery')}</option>
 </Select>
 </Field>
-<Field label={t('listings.imageUrl')} error={errors.imageUrl?.message}>
+<Field label={t('listings.imageUrl')} error={errors.imageUrl?.message || uploadError || undefined}>
 <div className="flex flex-col gap-3">
   <Input {...register('imageUrl')} placeholder="https://..." />
   <div className="flex items-center gap-2">
@@ -105,17 +107,28 @@ return (
       type="file" 
       accept="image/*" 
       capture="environment" 
-      onChange={(e) => {
+      disabled={uploading}
+      onChange={async (e) => {
         const f = e.target.files?.[0];
         if (f) {
-          const reader = new FileReader();
-          reader.onload = (ev) => setValue('imageUrl', ev.target?.result as string, { shouldValidate: true });
-          reader.readAsDataURL(f);
+          try {
+            setUploading(true);
+            setUploadError(null);
+            const url = await uploadProductImage(f);
+            setValue('imageUrl', url, { shouldValidate: true });
+          } catch (err: any) {
+            console.error('Image upload failed:', err);
+            setUploadError(err.message || 'Failed to upload image');
+          } finally {
+            setUploading(false);
+          }
         }
       }} 
-      className="block w-full text-sm text-gray-500 file:mr-4 file:rounded-lg file:border-0 file:bg-farmer file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-farmer-dark touch" 
+      className="block w-full text-sm text-gray-500 file:mr-4 file:rounded-lg file:border-0 file:bg-farmer file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-farmer-dark touch disabled:opacity-50" 
     />
   </div>
+  {uploading && <p className="text-xs text-farmer-dark animate-pulse font-medium">Uploading image...</p>}
+  {uploadError && <p className="text-xs text-red-600 font-medium">{uploadError}</p>}
   {watch('imageUrl') && (
     <img src={watch('imageUrl')} alt="Preview" className="mt-2 max-h-48 w-full rounded-xl object-cover shadow-sm" />
   )}

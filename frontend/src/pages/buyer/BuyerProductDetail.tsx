@@ -25,6 +25,7 @@ export default function BuyerProductDetail() {
   if (error || !p) return <ErrorState error={error} onRetry={refetch} />;
 
   const isAvailable = p.status === 'Available' || p.status === 'active';
+  const imageUrl = p.images && p.images.length > 0 && p.images[0] ? p.images[0] : null;
 
   const handleAddToCart = () => {
     add(p, Math.min(100, p.availableQtyKg));
@@ -40,8 +41,22 @@ export default function BuyerProductDetail() {
       <PageHeader title={p.product} />
 
       <Card className="overflow-hidden">
-        <div className="flex h-48 items-center justify-center bg-farmer-light text-6xl" role="img" aria-label={p.product}>
-          {productEmoji(p.product)}
+        <div className="relative flex h-56 sm:h-72 items-center justify-center bg-farmer-light overflow-hidden">
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={p.product}
+              className="h-full w-full object-cover"
+              onError={(e) => {
+                (e.target as HTMLElement).style.display = 'none';
+                const fallback = (e.target as HTMLElement).nextElementSibling;
+                if (fallback) fallback.classList.remove('hidden');
+              }}
+            />
+          ) : null}
+          <div className={`text-6xl ${imageUrl ? 'hidden' : ''}`} role="img" aria-label={p.product}>
+            {productEmoji(p.product)}
+          </div>
         </div>
         
         <div className="p-6">

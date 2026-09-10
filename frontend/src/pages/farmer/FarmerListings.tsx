@@ -33,10 +33,27 @@ action={<Link to="/farmer/listings/new"><Button><Plus size={18} />{t('farmerDash
 action={<Link to="/farmer/listings/new"><Button>{t('farmerDash.addProduct')}</Button></Link>} />
 ) : (
 <div className="grid gap-3 md:grid-cols-2">
-{listings.map((l) => (
-<Card key={l.id} className="flex gap-3">
-<div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-farmer-light 
-text-3xl" role="img" aria-label={l.product}>{productEmoji(l.product)}</div>
+{listings.map((l) => {
+  const imageUrl = l.images && l.images.length > 0 && l.images[0] ? l.images[0] : null;
+  return (
+    <Card key={l.id} className="flex gap-3">
+      <div className="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-farmer-light overflow-hidden">
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={l.product}
+            className="h-full w-full object-cover"
+            onError={(e) => {
+              (e.target as HTMLElement).style.display = 'none';
+              const fallback = (e.target as HTMLElement).nextElementSibling;
+              if (fallback) fallback.classList.remove('hidden');
+            }}
+          />
+        ) : null}
+        <div className={`text-3xl ${imageUrl ? 'hidden' : ''}`} role="img" aria-label={l.product}>
+          {productEmoji(l.product)}
+        </div>
+      </div>
 <div className="min-w-0 flex-1">
 <div className="flex items-center justify-between gap-2">
 <button onClick={() => nav(`/farmer/listings/${l.id}`)} className="truncate font-semibold 
@@ -70,7 +87,8 @@ onClick={() => toggle.mutate({ id: l.id, status: l.status })}
 </div>
 </div>
 </Card>
-))}
+  );
+})}
 </div>
 )}
 </div>

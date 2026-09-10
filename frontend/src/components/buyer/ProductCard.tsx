@@ -7,10 +7,26 @@ import { productEmoji } from '../../utils/constants';
 import { Badge, Stars } from '../common/ui';
 export default function ProductCard({ p }: { p: Product }) {
 const { t } = useTranslation();
+const imageUrl = p.images && p.images.length > 0 && p.images[0] ? p.images[0] : null;
+
 return (
 <Link to={`/buyer/products/${p.id}`} className="block overflow-hidden rounded-xl border bg-white shadow-sm transition hover:shadow-md">
-<div className="flex h-28 items-center justify-center bg-farmer-light text-4xl" role="img" aria-label={p.product}>
-{productEmoji(p.product)}
+<div className="relative flex h-36 items-center justify-center bg-farmer-light overflow-hidden">
+  {imageUrl ? (
+    <img
+      src={imageUrl}
+      alt={p.product}
+      className="h-full w-full object-cover"
+      onError={(e) => {
+        (e.target as HTMLElement).style.display = 'none';
+        const fallback = (e.target as HTMLElement).nextElementSibling;
+        if (fallback) fallback.classList.remove('hidden');
+      }}
+    />
+  ) : null}
+  <div className={`text-4xl ${imageUrl ? 'hidden' : ''}`} role="img" aria-label={p.product}>
+    {productEmoji(p.product)}
+  </div>
 </div>
 <div className="p-3">
 <div className="flex items-center justify-between gap-2">

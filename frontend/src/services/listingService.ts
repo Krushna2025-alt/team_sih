@@ -277,3 +277,48 @@ export const getProduct = async (id: string): Promise<Product> => {
   return product;
 };
 
+export const uploadProductImage = async (file: File): Promise<string> => {
+  if (supabase) {
+    try {
+      const fileExt = file.name.split('.').pop() || 'jpg';
+      const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+      const filePath = `products/${fileName}`;
+
+      const { data, error } = await supabase.storage
+        .from('product-images')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (!error && data) {
+        const { data: publicUrlData } = supabase.storage
+          .from('product-images')
+          .getPublicUrl(filePath);
+
+        if (publicUrlData?.publicUrl) {
+          return publicUrlData.publicUrl;
+        }
+      } else {
+        console.warn('Supabase storage upload error, falling back to data URL:', error);
+      }
+    } catch (e) {
+      console.warn('Storage upload exception, falling back to data URL:', e);
+    }
+  }
+
+  // Fallback to Data URL if storage bucket fails or client is offline/demo
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      if (ev.target?.result) {
+        resolve(ev.target.result as string);
+      } else {
+        reject(new Error('Failed to read image file'));
+      }
+    };
+    reader.onerror = () => reject(new Error('Failed to read image file'));
+    reader.readAsDataURL(file);
+  });
+};
+
