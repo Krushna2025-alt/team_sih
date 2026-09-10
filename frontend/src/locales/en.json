@@ -1,0 +1,148 @@
+{
+"common": {
+"appName": "KrishiLink", "login": "Login", "signup": "Sign Up", "logout": "Logout",
+"language": "Language", "loading": "Loading...", "retry": "Retry", "cancel": "Cancel",
+"save": "Save", "search": "Search", "back": "Back", "edit": "Edit", "view": "View",
+"viewAll": "View all", "publish": "Publish", "confirm": "Confirm", "reject": "Reject",
+"accept": "Accept", "close": "Close", "remove": "Remove", "add": "Add", "submit": "Submit",
+"total": "Total", "subtotal": "Subtotal", "deliveryFee": "Delivery fee", "estimated": "Estimated",
+"status": "Status", "distance": "Distance", "quality": "Quality", "price": "Price",
+"quantity": "Quantity", "product": "Product", "farmer": "Farmer", "buyer": "Buyer",
+"all": "All", "km": "km", "kg": "kg", "available": "Available", "actions": "Actions",
+"optional": "optional", "markAllRead": "Mark all as read", "contact": "Contact",
+"contactUnavailable": "Farmer contact is not available yet.", "phone": "Phone", "name": "Name",
+"email": "Email", "address": "Address", "notes": "Notes", "date": "Date",
+"mapUnavailable": "Map is unavailable right now.", "demoMode": "Demo mode",
+"notAvailable": "This feature needs the backend and is not connected yet.",
+"success": "Success", "settingsSaved": "Settings saved", "new": "New", "newest": "Newest"
+},
+"nav": {
+"home": "Home", "dashboard": "Dashboard", "listings": "My Listings", "voiceListing": "Voice Listing",
+"orders": "Orders", "earnings": "Earnings", "demands": "Demand Matches", "bulkDeals": "Bulk Deals",
+"notifications": "Notifications", "profile": "Profile", "browse": "Browse Products", "cart": "Cart",
+"checkout": "Checkout", "procurement": "Procurement", "users": "Users", "verifications": "Verifications",
+"disputes": "Disputes", "analytics": "Analytics", "settings": "Settings", "monthlyDiscussion": "Monthly Discussion"
+},
+"landing": {
+"heroTitle": "Direct Farmer-to-Institution Marketplace",
+"heroSubtitle": "Connect with local buyers and suppliers within 50 km",
+"iamFarmer": "I am a Farmer", "iamBuyer": "I am a Buyer",
+"farmerDesc": "List produce, find nearby institutional buyers and get fair prices.",
+"buyerDesc": "Source fresh produce directly from verified nearby farmers.",
+"voiceCta": "Speak to list your produce", "recentListings": "Recent listings",
+"about": "About", "contact": "Contact", "terms": "Terms", "privacy": "Privacy"
+},
+"auth": {
+"signInTitle": "Welcome back", "signInSubtitle": "Log in to continue to KrishiLink",
+"signupTitle": "Create your account", "phoneLabel": "Mobile number", "sendOtp": "Send OTP",
+"otpLabel": "Enter OTP", "verifyOtp": "Verify & Continue", "resend": "Resend OTP",
+"usePassword": "Use email & password", "useOtp": "Use phone OTP", "emailLabel": "Email",
+"passwordLabel": "Password", "signIn": "Sign in", "adminLoginTitle": "Admin Login",
+"nameLabel": "Full name", "roleLabel": "I am a", "roleFarmer": "Farmer", "roleBuyer": "Buyer",
+"createAccount": "Create account", "demoTitle": "Quick demo access",
+"demoHint": "Demo mode lets you explore every role without a backend.",
+"demoFarmer": "Enter as Farmer", "demoBuyer": "Enter as Buyer", "demoAdmin": "Enter as Admin",
+"notAdmin": "This account is not an admin.", "otpSent": "OTP sent. Please check your messages."
+},
+"status": {
+"pending": "Pending", "confirmed": "Confirmed", "dispatched": "Dispatched", "delivered": "Delivered",
+"rejected": "Rejected", "cancelled": "Cancelled", "open": "Open", "matched": "Matched",
+"closed": "Closed", "accepted": "Accepted", "active": "Active", "inactive": "Inactive", "resolved": "Resolved"
+},
+"errors": {
+"badRequest": "Invalid request. Please check the details.", "unauthorized": "Please log in again.",
+"forbidden": "You do not have access to this.", "notFound": "We could not find that.",
+"server": "Server error. Please try again later.", "network": "No internet connection.",
+"timeout": "The request timed out.", "generic": "Something went wrong."
+},
+"validation": {
+"required": "This field is required", "positive": "Enter a number greater than 0",
+"invalidPhone": "Enter a valid 10-digit mobile number", "minBulk": "Bulk deals need at least 50 kg",
+"maxLessThanMin": "Max price must be >= min price", "futureDate": "Choose a future date"
+},
+"farmerDash": {
+"welcome": "Namaste! Here is your farm at a glance.", "quickActions": "Quick actions",
+"addProduct": "Add Product", "nearbyDemand": "Nearby demand",
+"noDemand": "No nearby demand right now.", "bulkOpportunities": "Bulk opportunities"
+},
+"stats": {
+"activeListings": "Active listings", "availableQty": "Available quantity", "orders": "Orders",
+"weeklyRevenue": "Weekly revenue", "weeklySales": "This week's sales", "totalSales": "Total sales",
+"revenue": "Revenue", "profit": "Estimated profit", "pendingPayments": "Pending payments",
+"completedOrders": "Completed orders", "activeOrders": "Active orders",
+"monthlyProcurement": "Monthly procurement", "monthlySpending": "Monthly spending",
+"nearbyProducts": "Nearby products", "futureRequirements": "Future requirements",
+"bulkDeals": "Bulk deals", "recommendedFarmers": "Recommended farmers", "totalUsers": "Total users",
+"farmers": "Farmers", "buyers": "Buyers", "disputes": "Disputes", "transactionVolume": "Transaction volume",
+"nearbyDemand": "Nearby demand"
+},
+"listings": {
+"mine": "My Listings", "newTitle": "Add Product", "editTitle": "Edit Listing",
+"productName": "Product name", "expectedPrice": "Expected price (₹/kg)", "qualityGrade": "Quality grade",
+"availableFrom": "Available from", "deliveryOption": "Delivery option", "pickup": "Pickup at farm",
+"delivery": "Farmer delivers", "imageUrl": "Image URL (optional)", "listingSaved": "Listing saved",
+"deactivate": "Deactivate", "activate": "Activate", "empty": "No listings yet",
+"emptyHint": "Add your first product or use voice listing."
+},
+"voice": {
+"title": "Voice Listing", "hint": "Press the mic and speak about your produce — product, quantity, price and availability.",
+"start": "Start recording", "stop": "Stop", "recording": "Recording...",
+"processing": "Understanding your voice...", "transcript": "What we heard",
+"extracted": "Check & edit details", "reRecord": "Re-record", "confirmPublish": "Confirm & Publish",
+"published": "Listing published!", "micDenied": "Microphone permission denied.",
+"editHint": "Please verify AI-extracted details before publishing.", "editManually": "Edit Manually"
+},
+"orders": {
+"orderId": "Order", "items": "Items", "accept": "Accept", "reject": "Reject",
+"markDispatched": "Mark Dispatched", "placedOn": "Placed on", "deliveryInfo": "Delivery",
+"paymentMethod": "Payment", "cod": "Cash on delivery", "mockUpi": "UPI (test mode)",
+"rateBuyer": "Rate buyer", "rateFarmer": "Rate farmer", "rateTitle": "Rate your partner",
+"comment": "Comment (optional)", "ratingThanks": "Thanks for your rating!", "dispute": "Open dispute",
+"disputeTitle": "Open a dispute", "disputeReason": "Describe the problem",
+"disputeSent": "Dispute submitted. Admin will review it.", "noOrders": "No orders here yet"
+},
+"cart": {
+"empty": "Your cart is empty", "emptyHint": "Browse nearby products and add what you need.",
+"continueShopping": "Continue shopping", "checkout": "Proceed to checkout",
+"backendNote": "Totals shown are estimates. The backend calculates the final order total.", 
+"added": "Added to cart"
+},
+"checkout": {
+"title": "Checkout", "deliveryAddress": "Delivery address", "pickupOrDelivery": "Pickup or delivery",
+"deliveryDate": "Delivery date", "paymentMethod": "Payment method", "placeOrder": "Place order",
+"placed": "Order placed successfully!", "note": "Order creation is never retried automatically to avoid duplicates."
+},
+"demands": {
+"my": "My Demands", "newTitle": "Post Demand", "quantity": "Quantity needed (kg)",
+"requiredDate": "Required by", "minPrice": "Minimum price (₹/kg)", "maxPrice": "Maximum price (₹/kg)",
+"post": "Post demand", "matches": "Demand Matches",
+"matchesHint": "Institutions near you are looking for these products.",
+"noMatches": "No demand matches right now.", "noDemands": "You have not posted any demand yet.",
+"createListingCta": "I can supply this", "posted": "Demand posted. Farmers nearby can now see it."
+},
+"bulk": {
+"my": "Bulk Deals", "newTitle": "Create Bulk Deal", "totalQty": "Total quantity (kg)",
+"minOrderQty": "Minimum order (kg)", "basePrice": "Base price (₹/kg)", "closingDate": "Closing date",
+"create": "Create deal", "deals": "Bulk Deals", "noDeals": "No bulk deals yet.", "offers": "Offers",
+"offerFrom": "Offer from", "offeredQty": "Quantity", "offeredPrice": "Price", "dealScore": "Deal score",
+"accept": "Accept", "reject": "Reject", "submitOffer": "Submit offer",
+"minNote": "Bulk deals require 50 kg or more.", "closing": "Closes"
+},
+"bulkReason": {
+"better_price": "Better price", "shorter_distance": "Shorter distance", "high_reliability": "High reliability",
+"better_quantity": "Better quantity", "suitable_delivery": "Suitable delivery"
+},
+"notifications": { "empty": "No notifications", "emptyHint": "Order updates and demand matches will appear here." },
+"notifType": { "order": "Order update", "demand_match": "Demand match", "payment": "Payment", "bulk_offer": "Bulk offer", "system": "System" },
+"ratings": { "reliability": "Reliability", "completedOrders": "Completed orders", "verified": "Verified" },
+"profile": { "title": "Profile", "location": "Village / City", "update": "Update profile", "updated": "Profile updated" },
+"admin": {
+"dashboardSub": "Platform overview", "verify": "Verify", "verified": "Verified", "unverified": "Pending",
+"joined": "Joined", "nonePending": "Nothing pending. All clear!", "moderateDeactivate": "Deactivate",
+"moderateActivate": "Activate", "resolve": "Resolve", "resolution": "Resolution note",
+"resolvedNote": "Dispute resolved.", "settingsHint": "Platform settings (backend settings API pending - saved locally in demo).",
+"radius": "Default matching radius (km)", "commission": "Commission (%)", "maintenance": "Maintenance mode"
+},
+"products": { "empty": "No products found", "emptyHint": "Try different filters or increase distance." },
+"procurement": { "desc": "Post what you need. Matching farmers nearby see your demand and respond with supply." }
+}

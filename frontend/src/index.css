@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+html { -webkit-tap-highlight-color: transparent; }
+body { @apply bg-surface text-[15px] text-gray-800 antialiased; }
+}
+@layer components {
+.touch { @apply min-h-[44px] min-w-[44px]; }
+}
