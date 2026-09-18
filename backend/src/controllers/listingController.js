@@ -87,7 +87,7 @@ async function list(req, res, next) {
 async function getById(req, res, next) {
   try {
     const { data: listing, error } = await supabaseAdmin.from('listings')
-      .select('*, products(id, name, unit), farmers(id, user_id, farm_name, location, latitude, longitude, reliability_score, verified), product_images(image_url, sort_order)')
+      .select('*, products(id, name, unit), farmers(id, user_id, farm_name, location, latitude, longitude, reliability_score, verified), product_images(image_url, sort_order), quality_verifications(id, status, level, trust_score, visual_grade, expected_price, suggested_price_min, suggested_price_max, market_price_min, market_price_max, issues, confidence_score, created_at)')
       .eq('id', req.params.id).single();
     if (error || !listing) throw new AppError('Listing not found.', 404);
     return ok(res, listing);

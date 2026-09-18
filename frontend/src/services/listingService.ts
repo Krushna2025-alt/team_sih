@@ -20,7 +20,8 @@ const mapListing = (row: any): Listing => ({
   latitude: row.latitude != null ? Number(row.latitude) : undefined,
   longitude: row.longitude != null ? Number(row.longitude) : undefined,
   distanceKm: row.distance_km != null && Number(row.distance_km) > 0 ? Number(row.distance_km) : undefined,
-  createdAt: row.created_at
+  createdAt: row.created_at,
+  verificationId: row.verification_id
 });
 
 const mapProduct = (row: any): Product => ({

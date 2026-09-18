@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
-import { Pencil, Plus, Power } from 'lucide-react';
+import { Pencil, Plus, Power, ShieldCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { deactivateListing, getMyListings, updateListing } from '../../services/listingService';
 import { qk } from '../../utils/constants';
@@ -8,10 +8,17 @@ import { formatCurrency, formatKg, formatDate } from '../../utils/format';
 import { productEmoji } from '../../utils/constants';
 import { Badge, Button, Card, EmptyState, ErrorState, PageHeader, PageLoading, StatusBadge } 
 from '../../components/common/ui';
+import AIQualityCheckModal from '../../components/farmer/AIQualityCheckModal';
+import VerificationBadge from '../../components/common/VerificationBadge';
+import { VerificationReport, Listing } from '../../types';
+import { useState } from 'react';
+
 export default function FarmerListings() {
 const { t } = useTranslation();
 const nav = useNavigate();
 const qc = useQueryClient();
+const [verifyingListing, setVerifyingListing] = useState<Listing | null>(null);
+
 const { data, isLoading, error, refetch } = useQuery({ queryKey: qk.listings('mine'), queryFn: 
 getMyListings });
 const toggle = useMutation({
@@ -71,10 +78,24 @@ hover:underline">{l.product}</button>
   📍 {l.location}
 </p>
 )}
-<div className="mt-2 flex gap-2">
+{/* Show badge if verified */}
+{(l as any).verificationId && (
+  <div className="mt-2">
+    <Link to={`/verifications/${(l as any).verificationId}`}>
+      <VerificationBadge verification={{ id: (l as any).verificationId, status: 'completed', level: 1, trustScore: 80, visualGrade: 'B' } as any} />
+    </Link>
+  </div>
+)}
+<div className="mt-3 flex gap-2 flex-wrap">
 <Link to={`/farmer/listings/new?id=${l.id}`}>
 <Button tone="outline" className="!px-3 !py-1.5 text-sm"><Pencil size={14} />{t('common.edit')}</Button>
 </Link>
+<Button
+tone="outline" className="!px-3 !py-1.5 text-sm !border-green-300 !text-green-700 hover:!bg-green-50"
+onClick={() => setVerifyingListing(l)}
+>
+<ShieldCheck size={14} className="mr-1" /> AI Quality Check
+</Button>
 <Button
 tone={l.status === 'active' ? 'danger' : 'outline'}
 className="!px-3 !py-1.5 text-sm"
@@ -90,6 +111,19 @@ onClick={() => toggle.mutate({ id: l.id, status: l.status })}
   );
 })}
 </div>
+)}
+{verifyingListing && (
+  <AIQualityCheckModal
+    isOpen={!!verifyingListing}
+    onClose={() => setVerifyingListing(null)}
+    farmerId={verifyingListing.farmerId}
+    productId={verifyingListing.id}
+    defaultProductName={verifyingListing.product}
+    onSuccess={(report) => {
+      // Refresh listings
+      refetch();
+    }}
+  />
 )}
 </div>
 );

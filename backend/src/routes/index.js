@@ -12,6 +12,7 @@ router.use('/dashboard', require('./dashboardRoutes'));
 router.use('/admin', require('./adminRoutes'));
 router.use('/notifications', require('./notificationRoutes'));
 router.use('/disputes', require('./disputeRoutes'));
+router.use('/verifications', require('./verificationRoutes'));
 
 module.exports = router;
 

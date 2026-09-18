@@ -37,6 +37,7 @@ export interface Listing {
   longitude?: number;
   distanceKm?: number;
   createdAt: string;
+  verificationId?: string;
 }
 export interface Product extends Listing {
   farmerVerified: boolean;
@@ -44,6 +45,7 @@ export interface Product extends Listing {
   farmerReliability: number;
   farmerPhone?: string;
   farmerEmail?: string;
+  verification?: VerificationReport;
 }
 export interface OrderItem { id: string; productId: string; productName: string; quantityKg: number; pricePerKg: number; }
 export interface Order {
@@ -108,4 +110,41 @@ export interface RatingInput { orderId: string; stars: number; comment?: string;
 export interface ProductFilters {
 search?: string; maxPrice?: number; quality?: Quality | '';
 maxDistanceKm?: number; sort?: 'distance' | 'price' | 'quality' | 'newest';
+}
+
+export interface VerificationEvidence {
+  id: string;
+  verificationId: string;
+  type: 'image' | 'video' | 'measurement' | 'lab_report';
+  url?: string;
+  value?: number;
+  unit?: string;
+  metadata?: any;
+  createdAt: string;
+}
+
+export interface VerificationReport {
+  id: string;
+  farmerId: string;
+  productId?: string;
+  productName: string;
+  variety?: string;
+  quantityKg: number;
+  location: string;
+  status: 'pending' | 'completed' | 'failed';
+  visualGrade?: string;
+  visualScore?: number;
+  issues?: string[];
+  confidenceScore?: number;
+  level: 1 | 2 | 3;
+  trustScore: number;
+  expectedPrice?: number;
+  suggestedPriceMin?: number;
+  suggestedPriceMax?: number;
+  marketPriceMin?: number;
+  marketPriceMax?: number;
+  marketPriceSource?: string;
+  createdAt: string;
+  updatedAt: string;
+  evidence?: VerificationEvidence[];
 }

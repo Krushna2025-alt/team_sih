@@ -8,6 +8,9 @@ import { formatCurrency, formatDate, formatKg } from '../../utils/format';
 import { ArrowLeft, MessageCircle, ShoppingBag, BadgeCheck, MapPin, Calendar, CheckCircle2 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import MapView from '../../components/common/MapView';
+import VerificationBadge from '../../components/common/VerificationBadge';
+import { Link } from 'react-router-dom';
+import { verificationService } from '../../services/verificationService';
 
 export default function BuyerProductDetail() {
   const { id } = useParams();
@@ -21,8 +24,19 @@ export default function BuyerProductDetail() {
     enabled: !!id,
   });
 
+  const { data: verificationReport } = useQuery({
+    queryKey: ['verification', p?.verificationId],
+    queryFn: () => verificationService.getVerification(p!.verificationId!),
+    enabled: !!p?.verificationId,
+  });
+
   if (isLoading) return <PageLoading />;
   if (error || !p) return <ErrorState error={error} onRetry={refetch} />;
+
+  // Attach verification object to product for rendering
+  if (verificationReport) {
+    p.verification = verificationReport;
+  }
 
   const isAvailable = p.status === 'Available' || p.status === 'active';
   const imageUrl = p.images && p.images.length > 0 && p.images[0] ? p.images[0] : null;
@@ -72,6 +86,22 @@ export default function BuyerProductDetail() {
                   <Badge tone="red">{p.status}</Badge>
                 )}
               </div>
+              
+              {/* AI Verification Section */}
+              {p.verification && (
+                <div className="mt-4 p-3 bg-green-50 border border-green-100 rounded-lg max-w-sm">
+                  <div className="flex justify-between items-start mb-2">
+                    <VerificationBadge verification={p.verification} />
+                    <Link to={`/verifications/${p.verification.id}`} className="text-xs text-blue-600 hover:underline">View Full Report</Link>
+                  </div>
+                  <p className="text-xs text-gray-600 mb-1">
+                    Market Price Ref: <strong>₹{p.verification.marketPriceMin} - ₹{p.verification.marketPriceMax}/kg</strong>
+                  </p>
+                  <p className="text-[10px] text-gray-500 italic mt-2">
+                    This report is an AI-assisted assessment of submitted evidence. It is not a substitute for laboratory testing or official certification.
+                  </p>
+                </div>
+              )}
             </div>
             
             <div className="flex flex-col gap-3 sm:w-48">

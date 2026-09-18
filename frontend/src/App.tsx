@@ -32,6 +32,7 @@ import BuyerDemands from './pages/buyer/BuyerDemands';
 import BuyerProcurement from './pages/buyer/BuyerProcurement';
 import BuyerBulkDeals from './pages/buyer/BuyerBulkDeals';
 import BuyerProductDetail from './pages/buyer/BuyerProductDetail';
+import VerificationReportView from './pages/VerificationReportView';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -88,6 +89,9 @@ export default function App() {
                     </Route>
                   </Route>
                 </Route>
+
+                {/* Public or shared verification view */}
+                <Route path="/verifications/:id" element={<VerificationReportView />} />
 
                 <Route path="*" element={<NotFound />} />
               </Routes>
