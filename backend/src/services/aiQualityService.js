@@ -1,5 +1,5 @@
 // Mocked AI Quality Service for prototype
-const logger = require('../utils/logger');
+const logger = require('../config/logger');
 
 /**
  * Simulates analyzing product images and video using a Vision AI model.

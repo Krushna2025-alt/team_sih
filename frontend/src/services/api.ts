@@ -25,7 +25,7 @@ generic: 'Something went wrong.',
 // One central Axios instance — all backend requests go through /api/v1
 const api = axios.create({
 baseURL: (import.meta.env.VITE_API_BASE_URL || '') + '/api/v1',
-timeout: 3000,
+timeout: 60000,
 });
 api.interceptors.request.use(async (config) => {
 if (supabase) {

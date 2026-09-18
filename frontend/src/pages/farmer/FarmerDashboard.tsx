@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { Layers, Mic, Package, Plus, Wallet } from 'lucide-react';
+import { Layers, Mic, Package, Plus, Wallet, ShieldCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { getFarmerDashboard } from '../../services/dashboardService';
@@ -8,9 +9,11 @@ import { qk } from '../../utils/constants';
 import { formatCurrency, formatKg } from '../../utils/format';
 import { Button, Card, EmptyState, ErrorState, PageHeader, PageLoading, StatCard } from '../../components/common/ui';
 import WeeklyChart from '../../components/common/WeeklyChart';
+import AIQualityCheckModal from '../../components/farmer/AIQualityCheckModal';
 export default function FarmerDashboard() {
 const { t } = useTranslation();
 const { user } = useAuth();
+const [isVerifying, setIsVerifying] = useState(false);
 const { data, isLoading, error, refetch } = useQuery({ queryKey: qk.dashboard('farmer'), queryFn: 
 getFarmerDashboard });
 if (isLoading) return <PageLoading />;
@@ -32,6 +35,10 @@ return (
  <Link to="/farmer/listings/voice"><Button tone="accent"><Mic size={18} />{t('nav.voiceListing')}</Button></Link> 
  <Link to="/farmer/orders"><Button tone="outline"><Package size={18} />{t('nav.orders')}</Button></Link> 
  <Link to="/farmer/earnings"><Button tone="outline"><Wallet size={18} />{t('nav.earnings')}</Button></Link> 
+ <Button tone="outline" className="!border-green-300 !text-green-700 hover:!bg-green-50" onClick={() => setIsVerifying(true)}>
+   <ShieldCheck size={18} className="mr-1" />
+   AI Quality Check
+ </Button>
  </div> 
  </Card>
  <div className="grid gap-4 lg:grid-cols-2"> 
@@ -60,6 +67,17 @@ return (
  <EmptyState title={t('listings.empty')} subtitle={t('listings.emptyHint')} 
  action={<Link to="/farmer/listings/new"><Button>{t('farmerDash.addProduct')}</Button></Link>} /> 
  )} 
+ {user && (
+   <AIQualityCheckModal
+     isOpen={isVerifying}
+     onClose={() => setIsVerifying(false)}
+     farmerId={user.id}
+     onSuccess={() => {
+       setIsVerifying(false);
+       refetch();
+     }}
+   />
+ )}
 </div> 
 );
 }

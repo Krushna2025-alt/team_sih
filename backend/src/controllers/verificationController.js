@@ -2,7 +2,7 @@ const { supabaseAdmin } = require('../config/supabase');
 const { ok, badRequest, notFound } = require('../utils/response');
 const aiQualityService = require('../services/aiQualityService');
 const marketPriceService = require('../services/marketPriceService');
-const logger = require('../utils/logger');
+const logger = require('../config/logger');
 
 async function createVerification(req, res, next) {
     try {

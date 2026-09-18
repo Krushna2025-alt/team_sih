@@ -1,5 +1,5 @@
 // Mocked Market Price Service for prototype
-const logger = require('../utils/logger');
+const logger = require('../config/logger');
 
 /**
  * Simulates fetching market prices and calculating fair price suggestions.

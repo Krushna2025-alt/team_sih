@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, UploadCloud, FileText, CheckCircle, AlertTriangle } from 'lucide-react';
 import { verificationService } from '../../services/verificationService';
+import { uploadProductImage } from '../../services/listingService';
 import { VerificationReport } from '../../types';
 
 interface AIQualityCheckModalProps {
@@ -18,6 +19,8 @@ const AIQualityCheckModal: React.FC<AIQualityCheckModalProps> = ({ isOpen, onClo
   const [error, setError] = useState<string | null>(null);
   const [report, setReport] = useState<VerificationReport | null>(null);
   const [aiSummary, setAiSummary] = useState<string | null>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<{type: string, url: string, name: string}[]>([]);
+  const [uploadingFiles, setUploadingFiles] = useState(false);
 
   const [formData, setFormData] = useState({
     productName: defaultProductName || '',
@@ -35,11 +38,13 @@ const AIQualityCheckModal: React.FC<AIQualityCheckModalProps> = ({ isOpen, onClo
     setError(null);
 
     try {
-      // Mocked evidence payload
-      const mockEvidence = [
-        { type: 'image', url: 'https://example.com/mock-image1.jpg' },
-        { type: 'image', url: 'https://example.com/mock-image2.jpg' }
-      ];
+      // Use uploaded files or fallback to mock if empty
+      const evidenceData = uploadedFiles.length > 0 
+        ? uploadedFiles.map(f => ({ type: f.type, url: f.url }))
+        : [
+            { type: 'image', url: 'https://example.com/mock-image1.jpg' },
+            { type: 'image', url: 'https://example.com/mock-image2.jpg' }
+          ];
 
       const res = await verificationService.createVerification({
         farmerId,
@@ -49,7 +54,7 @@ const AIQualityCheckModal: React.FC<AIQualityCheckModalProps> = ({ isOpen, onClo
         quantityKg: Number(formData.quantityKg),
         location: formData.location,
         expectedPrice: Number(formData.expectedPrice),
-        evidence: mockEvidence
+        evidence: evidenceData
       });
 
       setReport(res);
@@ -114,12 +119,52 @@ const AIQualityCheckModal: React.FC<AIQualityCheckModalProps> = ({ isOpen, onClo
                 <p className="text-sm text-gray-500">Please provide photos or videos for AI analysis.</p>
               </div>
 
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-gray-50">
-                <p className="text-sm text-gray-600">Click or drag files here (Mocked for prototype)</p>
-                <div className="mt-4 flex justify-center gap-2">
-                  <span className="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full">image1.jpg</span>
-                  <span className="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full">video.mp4</span>
-                </div>
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-gray-50 relative group">
+                <input 
+                  type="file" 
+                  multiple 
+                  accept="image/*,video/*"
+                  disabled={uploadingFiles}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" 
+                  onChange={async (e) => {
+                    const files = Array.from(e.target.files || []);
+                    if (files.length > 0) {
+                      setUploadingFiles(true);
+                      setError(null);
+                      try {
+                        const newFiles = [...uploadedFiles];
+                        for (const f of files) {
+                          const url = await uploadProductImage(f);
+                          newFiles.push({ type: f.type.startsWith('video/') ? 'video' : 'image', url, name: f.name });
+                        }
+                        setUploadedFiles(newFiles);
+                      } catch (err: any) {
+                        setError(err.message || 'Failed to upload files');
+                      } finally {
+                        setUploadingFiles(false);
+                      }
+                    }
+                  }}
+                />
+                <p className="text-sm text-gray-600">Click or drag files here to upload images/videos</p>
+                {uploadingFiles && <p className="mt-2 text-xs text-green-600 animate-pulse font-medium">Uploading files...</p>}
+                
+                {uploadedFiles.length > 0 && (
+                  <div className="mt-4 flex flex-wrap justify-center gap-2 relative z-30">
+                    {uploadedFiles.map((f, i) => (
+                      <span key={i} className="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full flex items-center gap-1">
+                        <span className="truncate max-w-[120px]" title={f.name}>{f.name}</span>
+                        <button type="button" onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setUploadedFiles(prev => prev.filter((_, idx) => idx !== i));
+                        }} className="hover:text-green-900 ml-1 bg-green-200 rounded-full p-0.5">
+                           <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {error && (
@@ -190,9 +235,14 @@ const AIQualityCheckModal: React.FC<AIQualityCheckModalProps> = ({ isOpen, onClo
             </>
           )}
           {step === 3 && (
-            <button onClick={() => { onSuccess(report!); onClose(); }} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-              Apply to Listing
-            </button>
+            <>
+              <a href={`/verifications/${report.id}`} target="_blank" rel="noopener noreferrer" className="px-4 py-2 text-green-600 bg-green-50 border border-green-200 rounded hover:bg-green-100 flex items-center gap-2">
+                <FileText className="w-4 h-4" /> View Certificate
+              </a>
+              <button onClick={() => { onSuccess(report!); onClose(); }} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                Apply to Listing
+              </button>
+            </>
           )}
         </div>
       </div>
