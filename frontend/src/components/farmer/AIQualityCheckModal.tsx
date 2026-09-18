@@ -19,7 +19,7 @@ const AIQualityCheckModal: React.FC<AIQualityCheckModalProps> = ({ isOpen, onClo
   const [error, setError] = useState<string | null>(null);
   const [report, setReport] = useState<VerificationReport | null>(null);
   const [aiSummary, setAiSummary] = useState<string | null>(null);
-  const [uploadedFiles, setUploadedFiles] = useState<{type: string, url: string, name: string}[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<{ type: string, url: string, name: string }[]>([]);
   const [uploadingFiles, setUploadingFiles] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -39,12 +39,12 @@ const AIQualityCheckModal: React.FC<AIQualityCheckModalProps> = ({ isOpen, onClo
 
     try {
       // Use uploaded files or fallback to mock if empty
-      const evidenceData = uploadedFiles.length > 0 
+      const evidenceData = uploadedFiles.length > 0
         ? uploadedFiles.map(f => ({ type: f.type, url: f.url }))
         : [
-            { type: 'image', url: 'https://example.com/mock-image1.jpg' },
-            { type: 'image', url: 'https://example.com/mock-image2.jpg' }
-          ];
+          { type: 'image', url: 'https://example.com/mock-image1.jpg' },
+          { type: 'image', url: 'https://example.com/mock-image2.jpg' }
+        ];
 
       const res = await verificationService.createVerification({
         farmerId,
@@ -85,7 +85,7 @@ const AIQualityCheckModal: React.FC<AIQualityCheckModalProps> = ({ isOpen, onClo
           {step === 1 && (
             <form id="quality-form" onSubmit={(e) => { e.preventDefault(); setStep(2); }} className="space-y-4">
               <p className="text-sm text-gray-600 mb-4">Enter basic details to get a fair price estimate and quality grade.</p>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
@@ -120,12 +120,12 @@ const AIQualityCheckModal: React.FC<AIQualityCheckModalProps> = ({ isOpen, onClo
               </div>
 
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-gray-50 relative group">
-                <input 
-                  type="file" 
-                  multiple 
+                <input
+                  type="file"
+                  multiple
                   accept="image/*,video/*"
                   disabled={uploadingFiles}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" 
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
                   onChange={async (e) => {
                     const files = Array.from(e.target.files || []);
                     if (files.length > 0) {
@@ -148,7 +148,7 @@ const AIQualityCheckModal: React.FC<AIQualityCheckModalProps> = ({ isOpen, onClo
                 />
                 <p className="text-sm text-gray-600">Click or drag files here to upload images/videos</p>
                 {uploadingFiles && <p className="mt-2 text-xs text-green-600 animate-pulse font-medium">Uploading files...</p>}
-                
+
                 {uploadedFiles.length > 0 && (
                   <div className="mt-4 flex flex-wrap justify-center gap-2 relative z-30">
                     {uploadedFiles.map((f, i) => (
@@ -159,7 +159,7 @@ const AIQualityCheckModal: React.FC<AIQualityCheckModalProps> = ({ isOpen, onClo
                           e.stopPropagation();
                           setUploadedFiles(prev => prev.filter((_, idx) => idx !== i));
                         }} className="hover:text-green-900 ml-1 bg-green-200 rounded-full p-0.5">
-                           <X className="w-3 h-3" />
+                          <X className="w-3 h-3" />
                         </button>
                       </span>
                     ))}
@@ -198,7 +198,7 @@ const AIQualityCheckModal: React.FC<AIQualityCheckModalProps> = ({ isOpen, onClo
 
               <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
                 <h4 className="font-medium text-yellow-800 mb-2 flex items-center gap-2">
-                   Fair Price Intelligence
+                  Fair Price Intelligence
                 </h4>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div>
